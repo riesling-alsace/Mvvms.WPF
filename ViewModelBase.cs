@@ -3,28 +3,25 @@
 namespace Riesling.Mvvms.WPF;
 
 public class ViewModelBase : ModelBase {
-
-	#region Raise Methods
+    #region Raise Methods
 
     protected override void RaisePropertyChanged(params string[] propertyNames) {
-		if (Application.Current.Dispatcher.CheckAccess()) {
-			base.RaisePropertyChanged(propertyNames);
-		} else {
+        if (Application.Current.Dispatcher.CheckAccess()) {
+            base.RaisePropertyChanged(propertyNames);
+        } else {
             Application.Current.Dispatcher.BeginInvoke(() => {
-				lock (this) {
-					base.RaisePropertyChanged(propertyNames);
-				}
-			});
-		}
-	}
+                lock (this) {
+                    base.RaisePropertyChanged(propertyNames);
+                }
+            });
+        }
+    }
 
-	#endregion
-
+    #endregion
 }
 
 public abstract class ViewModelBase<TModelBase> : ViewModelBase
     where TModelBase : ModelBase, new() {
-
     #region Properties
 
     public TModelBase Model {
@@ -54,5 +51,4 @@ public abstract class ViewModelBase<TModelBase> : ViewModelBase
     protected abstract void Model_PropertiesChanged(object? sender, PropertiesChangedEventArgs e);
 
     #endregion
-
 }
